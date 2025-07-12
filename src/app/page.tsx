@@ -21,7 +21,7 @@ interface ProjectLink {
 
 // Composants
 const Header = () => (
-  <header className="text-center mb-8 relative pt-8 sm:pt-0">
+  <header className="text-center relative pt-8 sm:pt-0">
     <SparklesDemo/>
   </header>
 );
