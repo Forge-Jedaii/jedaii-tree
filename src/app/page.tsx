@@ -21,7 +21,7 @@ interface ProjectLink {
 
 // Composants
 const Header = () => (
-  <header className="text-center relative pt-8 sm:pt-0">
+  <header className="text-center relative pt-8 sm:pt-0 z-0">
     <SparklesDemo/>
   </header>
 );
@@ -210,14 +210,14 @@ const DojoProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
       {/* Éléments de fond décoratifs */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-20">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-cyan-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-40 right-20 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-full h-full opacity-40 z-5">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-cyan-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 bg-blue-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-40 h-40 bg-purple-400/20 rounded-full blur-3xl"></div>
       </div>
       
       {/* Lignes décoratives */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-30">
+      <div className="absolute top-0 left-0 w-full h-full opacity-30 z-5">
         <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
         <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
       </div>
