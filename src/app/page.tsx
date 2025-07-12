@@ -1,103 +1,251 @@
-import Image from "next/image";
+import React from 'react';
+import { Instagram, Facebook, Youtube, Joystick, Globe, BookOpen, Sword, Users, Calendar, Mail } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+// Types
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: React.ReactNode;
+  color: string;
+}
+
+interface ProjectLink {
+  title: string;
+  description: string;
+  url: string;
+  icon: React.ReactNode;
+  category: 'training' | 'community' | 'resources';
+}
+
+// Composants
+const Header = () => (
+  <header className="text-center mb-8 relative">
+    <div className="relative inline-block">
+      <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 mx-auto border-2 border-cyan-400/30 shadow-lg shadow-cyan-400/20 overflow-hidden bg-slate-900/50">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+            src="/images/logojapanforge.png"
+            alt="Logo Forge Je'daii"
+            width={120}
+            height={120}
+            className="w-16 h-auto xs:w-18 xs:h-auto sm:w-20 sm:h-auto md:w-24 md:h-auto lg:w-28 lg:h-auto object-contain"
+          />
+      </div>
+      <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
+    </div>
+    <h1 className="text-3xl font-bold text-white mb-2 tracking-wide">
+      Forge <span className="text-cyan-400">Je&apos;daii</span>
+    </h1>
+    <div className="h-0.5 w-20 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto"></div>
+  </header>
+);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+const Description = () => (
+  <section className="text-center mb-12 max-w-2xl mx-auto">
+    <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 shadow-xl">
+      <p className="text-slate-300 text-lg leading-relaxed mb-4">
+        Bienvenue dans notre dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span> 
+        rencontre la <span className="text-cyan-400 font-semibold">technologie d&apos;aujourd&apos;hui</span>.
+      </p>
+      <p className="text-slate-400 text-base">
+        Ici, tradition et innovation s&apos;harmonisent pour créer une expérience unique, 
+        entre sagesse millénaire et outils numériques, dans le respect de la nature et de l&apos;esprit bushido.
+      </p>
+      <div className="mt-6 flex justify-center space-x-4">
+        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+        <div className="w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse delay-150"></div>
+        <div className="w-2 h-2 bg-cyan-400/30 rounded-full animate-pulse delay-300"></div>
+      </div>
+    </div>
+  </section>
+);
+
+const SocialLinks = () => {
+  const socialLinks: SocialLink[] = [
+    {
+      name: 'Instagram',
+      url: 'https://www.instagram.com/laforgejedaii/',
+      icon: <Instagram size={24} />,
+      color: 'from-pink-500 to-purple-600'
+    },
+    {
+      name: 'Discord',
+      url: 'https://discord.gg/AjKM9vduNS',
+      icon: <Joystick size={24} />,
+      color: 'from-slate-800 to-slate-900'
+    },
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/laforgejedaii?locale=fr_FR',
+      icon: <Facebook size={24} />,
+      color: 'from-blue-600 to-blue-700'
+    },
+    {
+      name: 'YouTube',
+      url: 'https://www.youtube.com/@ForgeJedaii',
+      icon: <Youtube size={24} />,
+      color: 'from-red-500 to-red-600'
+    }
+  ];
+
+  return (
+    <section className="mb-12">
+      <h2 className="text-xl font-semibold text-white text-center mb-6">
+        Suivez notre <span className="text-cyan-400">communauté</span>
+      </h2>
+      <div className="flex justify-center space-x-4 flex-wrap gap-4">
+        {socialLinks.map((link) => (
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            key={link.name}
+            href={link.url}
+            className={`group relative p-4 rounded-2xl bg-gradient-to-br ${link.color} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl`}
+          >
+            <div className="text-white group-hover:scale-110 transition-transform duration-300">
+              {link.icon}
+            </div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-sm"></div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const ProjectLinks = () => {
+  const projectLinks: ProjectLink[] = [
+    {
+      title: 'Entraînements en Ligne',
+      description: 'Sessions virtuelles et cours techniques',
+      url: '#',
+      icon: <Sword size={24} />,
+      category: 'training'
+    },
+    {
+      title: 'Animal Flow',
+      description: 'Tout sur la pratique et le mouvement',
+      url: '#',
+      icon: <Users size={24} />,
+      category: 'community'
+    },
+    {
+      title: 'Bibliothèque Digitale',
+      description: 'Ressources et documentation',
+      url: '#',
+      icon: <BookOpen size={24} />,
+      category: 'resources'
+    },
+    {
+      title: 'Planning des Cours',
+      description: 'Horaires et réservations',
+      url: '#',
+      icon: <Calendar size={24} />,
+      category: 'training'
+    },
+    {
+      title: 'Site Principal',
+      description: 'Toutes les informations du dojo',
+      url: '#',
+      icon: <Globe size={24} />,
+      category: 'resources'
+    },
+    {
+      title: 'Contact',
+      description: 'Nous écrire directement',
+      url: '#',
+      icon: <Mail size={24} />,
+      category: 'community'
+    }
+  ];
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'training':
+        return 'from-cyan-500/20 to-blue-500/20 border-cyan-400/30 hover:border-cyan-400/50';
+      case 'community':
+        return 'from-purple-500/20 to-pink-500/20 border-purple-400/30 hover:border-purple-400/50';
+      case 'resources':
+        return 'from-green-500/20 to-emerald-500/20 border-green-400/30 hover:border-green-400/50';
+      default:
+        return 'from-slate-500/20 to-slate-600/20 border-slate-400/30 hover:border-slate-400/50';
+    }
+  };
+
+  return (
+    <section className="mb-12">
+      <h2 className="text-xl font-semibold text-white text-center mb-8">
+        Explorez nos <span className="text-cyan-400">ressources</span>
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projectLinks.map((link) => (
+          <a
+            key={link.title}
+            href={link.url}
+            className={`group relative p-6 rounded-2xl bg-gradient-to-br ${getCategoryColor(link.category)} border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl`}
+          >
+            <div className="flex items-center mb-4">
+              <div className="text-cyan-400 mr-3 group-hover:scale-110 transition-transform duration-300">
+                {link.icon}
+              </div>
+              <h3 className="text-white font-semibold text-lg">{link.title}</h3>
+            </div>
+            <p className="text-slate-300 text-sm">{link.description}</p>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-cyan-400/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => (
+  <footer className="text-center pt-8 border-t border-slate-700/50">
+    <div className="flex justify-center items-center space-x-4 mb-4">
+      <div className="w-8 h-0.5 bg-gradient-to-r from-transparent to-cyan-400"></div>
+      <div className="text-cyan-400 text-sm font-semibold">心・技・体</div>
+      <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-cyan-400"></div>
+    </div>
+    <p className="text-xxs sm:text-xs text-foreground/60 animate-pulse px-2 text-center">
+          © 2025 Forge Je&apos;daii - Développé avec ❤️ par{" "}
+          <Link
+            href="https://www.linkedin.com/in/lococoanthony/"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            @jedaiidev
+          </Link>
+        </p>
+  </footer>
+);
+
+// Composant principal
+const DojoProfilePage = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+      {/* Éléments de fond décoratifs */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-20">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-cyan-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl"></div>
+      </div>
+      
+      {/* Lignes décoratives */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-30">
+        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
+        <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
+      </div>
+
+      {/* Contenu principal */}
+      <div className="relative z-10 container mx-auto px-4 py-12 max-w-6xl">
+        <Header />
+        <Description />
+        <SocialLinks />
+        <ProjectLinks />
+        <Footer />
+      </div>
     </div>
   );
-}
+};
+
+export default DojoProfilePage;
