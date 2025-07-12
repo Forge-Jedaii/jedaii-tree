@@ -191,7 +191,7 @@ const Footer = () => (
       <div className="text-cyan-400 text-sm font-semibold">心・技・体</div>
       <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-cyan-400"></div>
     </div>
-    <p className="text-xxs sm:text-xs text-foreground/60 animate-pulse px-2 text-center">
+    <p className="text-xxs sm:text-xs text-blue-600 animate-pulse px-2 text-center ">
           © 2025 Forge Je&apos;daii - Développé avec ❤️ par{" "}
           <Link
             href="https://www.linkedin.com/in/lococoanthony/"
