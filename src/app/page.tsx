@@ -1,8 +1,5 @@
 import React from 'react';
 import { Instagram, Facebook, Youtube, Joystick, Globe, BookOpen, Sword, Users, Calendar, Mail } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-
 
 // Types
 interface SocialLink {
@@ -25,13 +22,9 @@ const Header = () => (
   <header className="text-center mb-8 relative">
     <div className="relative inline-block">
       <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 mx-auto border-2 border-cyan-400/30 shadow-lg shadow-cyan-400/20 overflow-hidden bg-slate-900/50">
-        <Image
-            src="/images/logojapanforge.png"
-            alt="Logo Forge Je'daii"
-            width={120}
-            height={120}
-            className="w-16 h-auto xs:w-18 xs:h-auto sm:w-20 sm:h-auto md:w-24 md:h-auto lg:w-28 lg:h-auto object-contain"
-          />
+        <div className="w-16 h-16 bg-cyan-400 rounded-full flex items-center justify-center">
+          <span className="text-slate-900 font-bold text-xl">道</span>
+        </div>
       </div>
       <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
       <div className="absolute top-1 -right-5 w-4 h-4 bg-orange-500 rounded-full animate-pulse delay-300 shadow-lg shadow-purple-400/50"></div>
@@ -47,12 +40,12 @@ const Description = () => (
   <section className="text-center mb-12 max-w-2xl mx-auto">
     <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 shadow-xl">
       <p className="text-slate-300 text-lg leading-relaxed mb-4">
-        Bienvenue dans notre 道場 dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span> 
-        rencontre la <span className="text-cyan-400 font-semibold">technologie d&apos;aujourd&apos;hui</span>.
+        Bienvenue dans notre 道場 dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span>{' '}
+        <span className="text-cyan-400 font-semibold">rencontre la technologie d&apos;aujourd&apos;hui</span>.
       </p>
+
       <p className="text-slate-400 text-base">
-        Ici, tradition et innovation s&apos;harmonisent pour créer une expérience unique, 
-        entre sagesse millénaire et outils numériques, dans le respect de la nature et de l&apos;esprit bushido.
+        Forger votre esprit, votre corps et votre art de vivre.
       </p>
       <div className="mt-6 flex justify-center space-x-4">
         <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
@@ -92,9 +85,7 @@ const SocialLinks = () => {
   ];
 
   return (
-    
     <section className="mb-12">
-      
       <h2 className="text-xl font-semibold text-white text-center mb-6">
         Suivez notre <span className="text-cyan-400">communauté</span>
       </h2>
@@ -144,7 +135,7 @@ const ProjectLinks = () => {
       description: 'Horaires et réservations',
       url: '#',
       icon: <Calendar size={24} />,
-      category: 'training'
+      category: 'community'
     },
     {
       title: 'Site Principal',
@@ -209,17 +200,17 @@ const Footer = () => (
       <div className="text-cyan-400 text-sm font-semibold">心・技・体</div>
       <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-cyan-400"></div>
     </div>
-    <p className="text-xxs sm:text-xs text-foreground/60 animate-pulse px-2 text-center">
-          © 2025 Forge Je&apos;daii - Développé avec ❤️ par{" "}
-          <Link
-            href="https://www.linkedin.com/in/lococoanthony/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            @jedaiidev
-          </Link>
-        </p>
+    <p className="text-xs text-slate-400 animate-pulse px-2 text-center">
+      © 2025 Forge Je&apos;daii - Développé avec ❤️ par{" "}
+      <a
+        href="https://www.linkedin.com/in/lococoanthony/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:underline"
+      >
+        @jedaiidev
+      </a>
+    </p>
   </footer>
 );
 
