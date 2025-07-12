@@ -1,7 +1,7 @@
 import React from 'react';
 import { Instagram, Facebook, Youtube, Joystick, Globe, BookOpen, Sword, Users, Calendar, Mail } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
+import SparklesDemo from './etoile';
 
 // Types
 interface SocialLink {
@@ -22,22 +22,7 @@ interface ProjectLink {
 // Composants
 const Header = () => (
   <header className="text-center mb-8 relative">
-    <div className="relative inline-block">
-      <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 mx-auto border-2 border-cyan-400/30 shadow-lg shadow-cyan-400/20 overflow-hidden bg-slate-900/50">
-        <Image
-            src="/images/logojapanforge.png"
-            alt="Logo Forge Je'daii"
-            width={120}
-            height={120}
-            className="w-16 h-auto xs:w-18 xs:h-auto sm:w-20 sm:h-auto md:w-24 md:h-auto lg:w-28 lg:h-auto object-contain"
-          />
-      </div>
-      <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
-    </div>
-    <h1 className="text-3xl font-bold text-white mb-2 tracking-wide">
-      Forge <span className="text-cyan-400">Je&apos;daii</span>
-    </h1>
-    <div className="h-0.5 w-20 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto"></div>
+    <SparklesDemo/>
   </header>
 );
 
@@ -45,7 +30,7 @@ const Description = () => (
   <section className="text-center mb-12 max-w-2xl mx-auto">
     <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 shadow-xl">
       <p className="text-slate-300 text-lg leading-relaxed mb-4">
-        Bienvenue dans notre dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span> 
+        Bienvenue dans notre 道場 dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span> 
         rencontre la <span className="text-cyan-400 font-semibold">technologie d&apos;aujourd&apos;hui</span>.
       </p>
       <p className="text-slate-400 text-base">
@@ -90,6 +75,7 @@ const SocialLinks = () => {
   ];
 
   return (
+    
     <section className="mb-12">
       <h2 className="text-xl font-semibold text-white text-center mb-6">
         Suivez notre <span className="text-cyan-400">communauté</span>
@@ -174,7 +160,7 @@ const ProjectLinks = () => {
   return (
     <section className="mb-12">
       <h2 className="text-xl font-semibold text-white text-center mb-8">
-        Explorez nos <span className="text-cyan-400">ressources</span>
+        Un besoin <span className="text-cyan-400">spécifique ?</span>
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projectLinks.map((link) => (
