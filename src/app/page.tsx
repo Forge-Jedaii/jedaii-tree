@@ -1,5 +1,6 @@
 import React from 'react';
-import { Instagram, Facebook, Youtube, Joystick, Globe, BookOpen, Sword, Users, Calendar, Mail } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Joystick, Globe, BookOpen, Swords, PawPrint, MessageSquareMore, House } from 'lucide-react';
+import Image from 'next/image';
 
 // Types
 interface SocialLink {
@@ -14,7 +15,7 @@ interface ProjectLink {
   description: string;
   url: string;
   icon: React.ReactNode;
-  category: 'training' | 'community' | 'resources';
+  category: 'site officiel' | 'community' | 'resources' | 'animalflow';
 }
 
 // Composants
@@ -22,9 +23,12 @@ const Header = () => (
   <header className="text-center mb-8 relative">
     <div className="relative inline-block">
       <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 mx-auto border-2 border-cyan-400/30 shadow-lg shadow-cyan-400/20 overflow-hidden bg-slate-900/50">
-        <div className="w-16 h-16 bg-cyan-400 rounded-full flex items-center justify-center">
-          <span className="text-slate-900 font-bold text-xl">道</span>
-        </div>
+        <Image
+      src="/images/logojapanforge.png"
+      width={200}
+      height={200}
+      alt="Logo de la Forge Je'daii"
+    />
       </div>
       <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
       <div className="absolute top-1 -right-5 w-4 h-4 bg-orange-500 rounded-full animate-pulse delay-300 shadow-lg shadow-purple-400/50"></div>
@@ -40,7 +44,7 @@ const Description = () => (
   <section className="text-center mb-12 max-w-2xl mx-auto">
     <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 shadow-xl">
       <p className="text-slate-300 text-lg leading-relaxed mb-4">
-        Bienvenue dans notre 道場 dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span>{' '}
+        Bienvenue dans notre dojo moderne où <span className="text-cyan-400 font-semibold">l&apos;art martial ancestral</span>{' '}
         <span className="text-cyan-400 font-semibold">rencontre la technologie d&apos;aujourd&apos;hui</span>.
       </p>
 
@@ -110,52 +114,52 @@ const SocialLinks = () => {
 const ProjectLinks = () => {
   const projectLinks: ProjectLink[] = [
     {
-      title: 'Entraînements en Ligne',
-      description: 'Sessions virtuelles et cours techniques',
-      url: '#',
-      icon: <Sword size={24} />,
-      category: 'training'
+      title: 'Site principal',
+      description: 'Toutes les informations regroupées en un site.',
+      url: 'https://www.forgejedaii.fr/',
+      icon: <House size={24} />,
+      category: 'site officiel'
     },
     {
       title: 'Animal Flow',
       description: 'Tout sur la pratique et le mouvement',
-      url: '#',
-      icon: <Users size={24} />,
-      category: 'community'
+      url: 'https://www.animalflow-jedaii.fr/',
+      icon: <PawPrint size={24} />,
+      category: 'animalflow'
     },
     {
-      title: 'Bibliothèque Digitale',
-      description: 'Ressources et documentation',
-      url: '#',
+      title: 'Boutique digitale',
+      description: 'Réserver un cours, équipements & tenues, adhésions...',
+      url: 'https://www.helloasso.com/associations/forge-je-daii',
       icon: <BookOpen size={24} />,
       category: 'resources'
     },
     {
-      title: 'Planning des Cours',
-      description: 'Horaires et réservations',
+      title: 'Battle Royale',
+      description: 'Prochainement.',
       url: '#',
-      icon: <Calendar size={24} />,
+      icon: <Swords size={24} />,
       category: 'community'
     },
     {
-      title: 'Site Principal',
-      description: 'Toutes les informations du dojo',
-      url: '#',
+      title: 'Codatech',
+      description: 'Technologie BattleSword et O.ARK',
+      url: 'https://oark.io/',
       icon: <Globe size={24} />,
       category: 'resources'
     },
     {
       title: 'Contact',
-      description: 'Nous écrire directement',
-      url: '#',
-      icon: <Mail size={24} />,
+      description: 'Pour toutes animations, interventions ou techniques',
+      url: 'https://wa.me/+33667420774',
+      icon: <MessageSquareMore size={24} />,
       category: 'community'
     }
   ];
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'training':
+      case 'site officiel':
         return 'from-cyan-500/20 to-blue-500/20 border-cyan-400/30 hover:border-cyan-400/50';
       case 'community':
         return 'from-purple-500/20 to-pink-500/20 border-purple-400/30 hover:border-purple-400/50';
@@ -163,6 +167,8 @@ const ProjectLinks = () => {
         return 'from-green-500/20 to-emerald-500/20 border-green-400/30 hover:border-green-400/50';
       default:
         return 'from-slate-500/20 to-slate-600/20 border-slate-400/30 hover:border-slate-400/50';
+        case 'animalflow':
+        return 'from-purple-500/20 to-pink-500/20 border-purple-400/30 hover:border-purple-400/50';
     }
   };
 
