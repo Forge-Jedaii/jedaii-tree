@@ -149,7 +149,7 @@ const ProjectLinks = () => {
       category: 'resources'
     },
     {
-      title: 'Contact',
+      title: 'Contact via whatsapp',
       description: 'Pour toutes animations, interventions ou techniques',
       url: 'https://wa.me/+33667420774',
       icon: <MessageSquareMore size={24} />,
