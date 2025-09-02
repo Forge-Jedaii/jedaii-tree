@@ -27,7 +27,7 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
   title = "Événements à Venir", 
   className = "" 
 }) => {
-  const [currentMessageIndexes, setCurrentMessageIndexes] = useState<number[]>([0, 0, 0, 0]);
+  
   const [buttonStates, setButtonStates] = useState<Record<number, string | null>>({});
 
   const defaultEvents: Event[] = [
@@ -95,20 +95,23 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
   ];
 
   const eventsData = events || defaultEvents;
+  const [currentMessageIndexes, setCurrentMessageIndexes] = useState<number[]>(
+  Array(eventsData.length).fill(0)
+);
 
   useEffect(() => {
-    const intervals = eventsData.map((event, index) => {
-      return setInterval(() => {
-        setCurrentMessageIndexes(prev => {
-          const newIndexes = [...prev];
-          newIndexes[index] = (newIndexes[index] + 1) % event.newsMessages.length;
-          return newIndexes;
-        });
-      }, 4000 + (index * 1000));
-    });
+  const intervals = eventsData.map((event, index) => {
+    return setInterval(() => {
+      setCurrentMessageIndexes(prev => {
+        const newIndexes = [...prev];
+        newIndexes[index] = (newIndexes[index] + 1) % event.newsMessages.length;
+        return newIndexes;
+      });
+    }, 4000 + index * 1000);
+  });
 
-    return () => intervals.forEach(clearInterval);
-  }, [eventsData]);
+  return () => intervals.forEach(clearInterval);
+}, [eventsData]);
 
   const handleButtonClick = (eventId: number) => {
     setButtonStates(prev => ({ ...prev, [eventId]: 'clicked' }));
