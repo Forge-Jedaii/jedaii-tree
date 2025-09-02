@@ -221,7 +221,7 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
     },
     {
       title: 'CSC- Combat Sensei Compagnon',
-      description: 'Le compagnon idéal pour l arbitrage et suivi d événements',
+      description: 'Le compagnon idéal pour l arbitrage et suivi d événements, un guide pour les grades est inclus',
       url: 'https://combat-sensei-compagnon-csc-next-js.vercel.app/',
       icon: <Gamepad size={24} />,
       category: 'animalflow',
