@@ -218,6 +218,14 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
       icon: <Cctv size={24} />,
       category: 'resources',
       isModal: true
+    },
+    {
+      title: 'CSC- Combat Sensei Compagnon',
+      description: 'Le compagnon idéal pour l arbitrage et suivi d événements',
+      url: '#',
+      icon: <Cctv size={24} />,
+      category: 'animalflow',
+      isModal: true
     }
   ];
 
