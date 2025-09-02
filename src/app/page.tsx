@@ -225,7 +225,6 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
       url: 'https://combat-sensei-compagnon-csc-next-js.vercel.app/',
       icon: <Gamepad size={24} />,
       category: 'animalflow',
-      isModal: true
     }
   ];
 
