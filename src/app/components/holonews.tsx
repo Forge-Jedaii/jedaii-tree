@@ -91,27 +91,26 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
       newsMessages: ["L'appel de la Forge", "Tournoi officiel", "Je'daii Life"],
       newsTag: "FJ-20"
     },
-    
   ];
 
   const eventsData = events || defaultEvents;
   const [currentMessageIndexes, setCurrentMessageIndexes] = useState<number[]>(
-  Array(eventsData.length).fill(0)
-);
+    Array(eventsData.length).fill(0)
+  );
 
   useEffect(() => {
-  const intervals = eventsData.map((event, index) => {
-    return setInterval(() => {
-      setCurrentMessageIndexes(prev => {
-        const newIndexes = [...prev];
-        newIndexes[index] = (newIndexes[index] + 1) % event.newsMessages.length;
-        return newIndexes;
-      });
-    }, 4000 + index * 1000);
-  });
+    const intervals = eventsData.map((event, index) => {
+      return setInterval(() => {
+        setCurrentMessageIndexes(prev => {
+          const newIndexes = [...prev];
+          newIndexes[index] = (newIndexes[index] + 1) % event.newsMessages.length;
+          return newIndexes;
+        });
+      }, 4000 + index * 1000);
+    });
 
-  return () => intervals.forEach(clearInterval);
-}, [eventsData]);
+    return () => intervals.forEach(clearInterval);
+  }, [eventsData]);
 
   const handleButtonClick = (eventId: number) => {
     setButtonStates(prev => ({ ...prev, [eventId]: 'clicked' }));
@@ -126,57 +125,72 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
   };
 
   return (
-    <div className={`max-w-6xl mx-auto ${className}`}>
-      <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">{title}</h1>
+    <div className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
+      {/* Titre responsive */}
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-6 sm:mb-8 text-center">
+        {title}
+      </h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Grille responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {eventsData.map((event, index) => (
-          <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-            {/* Bannière de news */}
-           <div className="h-10 overflow-hidden relative flex items-center"
-     style={{
-       background: "linear-gradient(to right, #000000, #051525, #000000)",
-       borderRadius: 4,
-       boxShadow: "0 0 10px rgba(0, 100, 200, 0.3)",
-     }}
->
-  <div className="absolute whitespace-nowrap flex items-center gap-x-4 marquee">
-    <span className="text-yellow-500 font-medium text-sm tracking-wider font-[Aurebesh]">
-      Holonews
-    </span>
-    <span className="text-cyan-400 font-medium text-sm tracking-wider">
-      {event.newsMessages[currentMessageIndexes[index]]}
-    </span>
-    <span className="text-yellow-500 font-medium text-sm tracking-wider font-[Aurebesh]">
-      {event.newsTag}
-    </span>
-  </div>
-</div>
+          <div 
+            key={event.id} 
+            className="bg-white rounded-lg shadow-lg overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col"
+          >
+            {/* Bannière de news - responsive */}
+            <div 
+              className="h-8 sm:h-10 overflow-hidden relative flex items-center"
+              style={{
+                background: "linear-gradient(to right, #000000, #051525, #000000)",
+                borderRadius: 4,
+                boxShadow: "0 0 10px rgba(0, 100, 200, 0.3)",
+              }}
+            >
+              <div className="absolute whitespace-nowrap flex items-center gap-x-2 sm:gap-x-4 marquee">
+                <span className="text-yellow-500 font-medium text-xs sm:text-sm tracking-wider font-[Aurebesh]">
+                  Holonews
+                </span>
+                <span className="text-cyan-400 font-medium text-xs sm:text-sm tracking-wider">
+                  {event.newsMessages[currentMessageIndexes[index]]}
+                </span>
+                <span className="text-yellow-500 font-medium text-xs sm:text-sm tracking-wider font-[Aurebesh]">
+                  {event.newsTag}
+                </span>
+              </div>
+            </div>
 
-
+            {/* Image de l'événement - responsive */}
+            <div className={`h-32 sm:h-40 md:h-48 w-full bg-gradient-to-br ${event.color} flex items-center justify-center overflow-hidden`}>
+              <Image 
+                src={event.image} 
+                alt={event.title} 
+                width={280}
+                height={120}
+                className="object-contain w-auto h-auto max-w-full max-h-full"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
             
-            {/* Image de l'événement */}
-<div className={`h-48 w-full bg-gradient-to-br ${event.color} flex items-center justify-center overflow-hidden rounded-t-lg`}>
-  <Image 
-    src={event.image} 
-    alt={event.title} 
-    width={280}        // largeur adaptée à la vignette
-    height={120}       // hauteur adaptée
-    className="object-contain" // <-- l'image s'adapte sans déformer le fond
-  />
-</div>
-
-            
-            {/* Contenu */}
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{event.title}</h3>
-              <p className="text-gray-600 mb-4">{event.description}</p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">📅 {event.date}</span>
+            {/* Contenu - responsive et flexible */}
+            <div className="p-4 sm:p-6 flex-1 flex flex-col">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 line-clamp-2">
+                {event.title}
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-4 flex-1 line-clamp-3 sm:line-clamp-4">
+                {event.description}
+              </p>
+              
+              {/* Footer avec date et bouton - responsive */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-auto">
+                <span className="text-xs sm:text-sm text-gray-500 flex items-center">
+                  <span className="mr-1">📅</span>
+                  <span className="break-words">{event.date}</span>
+                </span>
                 <button 
-                  className={`text-white px-4 py-2 rounded-lg transition-all duration-200 ${
+                  className={`text-white px-3 sm:px-4 py-2 rounded-lg transition-all duration-200 text-sm sm:text-base font-medium self-start sm:self-auto ${
                     buttonStates[event.id] === 'success' ? 'bg-green-500' : event.buttonColor
-                  } ${buttonStates[event.id] === 'clicked' ? 'transform scale-95' : ''}`}
+                  } ${buttonStates[event.id] === 'clicked' ? 'transform scale-95' : ''} active:scale-95`}
                   onClick={() => handleButtonClick(event.id)}
                 >
                   {buttonStates[event.id] === 'success' ? '✓ Fait !' : event.buttonText}
@@ -186,6 +200,45 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
           </div>
         ))}
       </div>
+      
+      {/* Styles CSS pour l'animation marquee et line-clamp */}
+      <style jsx>{`
+        .marquee {
+          animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+        
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .line-clamp-4 {
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        @media (max-width: 640px) {
+          .marquee {
+            animation: scroll 15s linear infinite;
+          }
+        }
+      `}</style>
     </div>
   );
 };

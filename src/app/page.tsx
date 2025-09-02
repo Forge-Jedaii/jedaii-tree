@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Instagram, Facebook, Youtube, Cctv, Joystick, Globe, BookOpen, Swords, PawPrint, MessageSquareMore, Home, X } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Cctv,Gamepad, Joystick, Globe, BookOpen, Swords, PawPrint, MessageSquareMore, Home, X } from 'lucide-react';
 import Image from 'next/image';
 import UpcomingEvents from './components/holonews';
 
@@ -222,8 +222,8 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
     {
       title: 'CSC- Combat Sensei Compagnon',
       description: 'Le compagnon idéal pour l arbitrage et suivi d événements',
-      url: '#',
-      icon: <Cctv size={24} />,
+      url: 'https://combat-sensei-compagnon-csc-next-js.vercel.app/',
+      icon: <Gamepad size={24} />,
       category: 'animalflow',
       isModal: true
     }
