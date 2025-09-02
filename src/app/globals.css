@@ -32,3 +32,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.marquee {
+  display: inline-block;
+  /* nécessaire pour que transform fonctionne */
+  white-space: nowrap;
+  /* empêche le texte de revenir à la ligne */
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}

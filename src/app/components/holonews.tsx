@@ -130,28 +130,27 @@ const UpcomingEvents: React.FC<UpcomingEventsProps> = ({
         {eventsData.map((event, index) => (
           <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:transform hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
             {/* Bannière de news */}
-            <div 
-              className="h-10 overflow-hidden relative flex items-center justify-center"
-              style={{
-                background: "linear-gradient(to right, #000000, #051525, #000000)",
-                borderRadius: 4,
-                boxShadow: "0 0 10px rgba(0, 100, 200, 0.3)",
-              }}
-            >
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="whitespace-nowrap text-center flex items-center gap-x-4 animate-pulse">
-                  <span className="text-yellow-500 font-medium text-sm tracking-wider animate-pulse font-[Aurebesh]">
-                    Holonews
-                  </span>
-                  <span className="text-cyan-400 font-medium text-sm tracking-wider">
-                    {event.newsMessages[currentMessageIndexes[index]]}
-                  </span>
-                  <span className="text-yellow-500 font-medium text-sm tracking-wider animate-pulse font-[Aurebesh]">
-                    {event.newsTag}
-                  </span>
-                </div>
-              </div>
-            </div>
+           <div className="h-10 overflow-hidden relative flex items-center"
+     style={{
+       background: "linear-gradient(to right, #000000, #051525, #000000)",
+       borderRadius: 4,
+       boxShadow: "0 0 10px rgba(0, 100, 200, 0.3)",
+     }}
+>
+  <div className="absolute whitespace-nowrap flex items-center gap-x-4 marquee">
+    <span className="text-yellow-500 font-medium text-sm tracking-wider font-[Aurebesh]">
+      Holonews
+    </span>
+    <span className="text-cyan-400 font-medium text-sm tracking-wider">
+      {event.newsMessages[currentMessageIndexes[index]]}
+    </span>
+    <span className="text-yellow-500 font-medium text-sm tracking-wider font-[Aurebesh]">
+      {event.newsTag}
+    </span>
+  </div>
+</div>
+
+
             
             {/* Image de l'événement */}
 <div className={`h-48 w-full bg-gradient-to-br ${event.color} flex items-center justify-center overflow-hidden rounded-t-lg`}>
