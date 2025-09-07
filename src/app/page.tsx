@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Instagram, Facebook, Youtube, Cctv,Gamepad, Joystick, Globe, BookOpen, Swords, PawPrint, MessageSquareMore, Home, X } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Cctv, Gamepad, Joystick, Globe, BookOpen, Swords, PawPrint, MessageSquareMore, Home, X } from 'lucide-react';
 import Image from 'next/image';
 import UpcomingEvents from './components/holonews';
 
@@ -19,7 +19,8 @@ interface ProjectLink {
   url: string;
   icon: React.ReactNode;
   category: 'site officiel' | 'community' | 'resources' | 'animalflow';
-  isModal?: boolean;
+  isModal?: boolean;   // pour Holonews
+  isPdf?: boolean;     // >>> ajouté pour le PDF
 }
 
 // Logo placeholder component
@@ -32,7 +33,7 @@ const Logo = () => (
   />
 );
 
-// Modal Component
+// Modal Component (Holonews)
 const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   if (!isOpen) return null;
 
@@ -73,6 +74,44 @@ const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-l from-transparent to-cyan-400"></div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/** === Nouvelle modal PDF (ajout minimal) === */
+const PdfModal = ({ isOpen, onClose, pdfPath }: { isOpen: boolean; onClose: () => void; pdfPath: string }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      ></div>
+
+      <div className="relative bg-slate-900/95 backdrop-blur-md border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 w-full max-w-4xl lg:max-w-5xl max-h-[95vh] overflow-hidden shadow-2xl">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-white transition-colors duration-200 p-1 sm:p-2"
+        >
+          <X size={20} className="sm:w-6 sm:h-6" />
+        </button>
+
+        <div className="flex items-center mb-4 sm:mb-6">
+          <BookOpen className="text-green-400 mr-2 sm:mr-3" size={24} />
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+            Règlements officiels combat FJ
+          </h2>
+        </div>
+
+        {/* iframe bien FERMÉE pour éviter l'erreur JSX */}
+        <div className="w-full h-[70vh] sm:h-[80vh]">
+          <iframe
+            src={pdfPath}
+            className="w-full h-full rounded-lg border border-slate-700"
+          ></iframe>
         </div>
       </div>
     </div>
@@ -167,7 +206,8 @@ const SocialLinks = () => {
   );
 };
 
-const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
+/** === ProjectLinks : onOpenModal devient générique (holonews | pdf) === */
+const ProjectLinks = ({ onOpenModal }: { onOpenModal: (type: 'holonews' | 'pdf', pdfPath?: string) => void }) => {
   const projectLinks: ProjectLink[] = [
     {
       title: 'Site principal',
@@ -225,6 +265,15 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
       url: 'https://combat-sensei-compagnon-csc-next-js.vercel.app/',
       icon: <Gamepad size={24} />,
       category: 'animalflow',
+    },
+    /** === Nouvel item PDF (ajout minimal) === */
+    {
+      title: 'Règlements officiels combat FJ',
+      description: 'Consulter les règlements officiels en format PDF',
+      url: '/documents/ReglementsFJ.pdf', // place le fichier ici
+      icon: <BookOpen size={24} />,
+      category: 'resources',
+      isPdf: true
     }
   ];
 
@@ -246,7 +295,10 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
   const handleClick = (link: ProjectLink, e: React.MouseEvent) => {
     if (link.isModal) {
       e.preventDefault();
-      onOpenModal();
+      onOpenModal('holonews');
+    } else if (link.isPdf) {
+      e.preventDefault();
+      onOpenModal('pdf', link.url); // on passe le path du PDF
     }
   };
 
@@ -259,7 +311,7 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: () => void }) => {
         {projectLinks.map((link) => (
           <a
             key={link.title}
-            href={link.isModal ? '#' : link.url}
+            href={link.isModal || link.isPdf ? '#' : link.url}
             onClick={(e) => handleClick(link, e)}
             className={`group relative p-6 rounded-2xl bg-gradient-to-br ${getCategoryColor(link.category)} border backdrop-blur-sm hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl cursor-pointer`}
           >
@@ -301,10 +353,22 @@ const Footer = () => (
 
 // Composant principal
 const DojoProfilePage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHolonewsOpen, setIsHolonewsOpen] = useState(false);
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+  const [pdfSrc, setPdfSrc] = useState<string>('/pdfs/reglement-combat-fj.pdf');
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  /** Un seul handler pour garder la même prop côté ProjectLinks */
+  const handleOpenModal = (type: 'holonews' | 'pdf', src?: string) => {
+    if (type === 'holonews') {
+      setIsHolonewsOpen(true);
+    } else {
+      if (src) setPdfSrc(src);
+      setIsPdfOpen(true);
+    }
+  };
+
+  const closeHolonews = () => setIsHolonewsOpen(false);
+  const closePdf = () => setIsPdfOpen(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
@@ -326,12 +390,14 @@ const DojoProfilePage = () => {
         <Header />
         <Description />
         <SocialLinks />
-        <ProjectLinks onOpenModal={openModal} />
+        {/* >>> on conserve UNE SEULE prop, mais plus générique */}
+        <ProjectLinks onOpenModal={handleOpenModal} />
         <Footer />
       </div>
 
-      {/* Modal */}
-      <HolonewsModal isOpen={isModalOpen} onClose={closeModal} />
+      {/* Modals */}
+      <HolonewsModal isOpen={isHolonewsOpen} onClose={closeHolonews} />
+      <PdfModal isOpen={isPdfOpen} onClose={closePdf} pdfPath={pdfSrc} />
     </div>
   );
 };
