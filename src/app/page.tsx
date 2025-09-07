@@ -109,9 +109,10 @@ const PdfModal = ({ isOpen, onClose, pdfPath }: { isOpen: boolean; onClose: () =
         {/* iframe bien FERMÉE pour éviter l'erreur JSX */}
         <div className="w-full h-[70vh] sm:h-[80vh]">
           <iframe
-            src={pdfPath}
-            className="w-full h-full rounded-lg border border-slate-700"
-          ></iframe>
+  src={`https://docs.google.com/viewer?url=${encodeURIComponent(pdfPath)}&embedded=true`}
+  className="w-full h-full rounded-lg border border-slate-700"
+></iframe>
+
         </div>
       </div>
     </div>
