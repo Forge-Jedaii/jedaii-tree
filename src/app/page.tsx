@@ -19,8 +19,8 @@ interface ProjectLink {
   url: string;
   icon: React.ReactNode;
   category: 'site officiel' | 'community' | 'resources' | 'animalflow';
-  isModal?: boolean;   // pour Holonews
-  isPdf?: boolean;     // >>> ajouté pour le PDF
+  isModal?: boolean;
+  isPdf?: boolean;
 }
 
 // Logo placeholder component
@@ -39,15 +39,12 @@ const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
-      {/* Backdrop avec flou */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       ></div>
       
-      {/* Modal responsive */}
       <div className="relative bg-slate-900/95 backdrop-blur-md border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-6xl max-h-[95vh] sm:max-h-[90vh] md:max-h-[85vh] overflow-y-auto shadow-2xl">
-        {/* Bouton de fermeture */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-white transition-colors duration-200 p-1 sm:p-2"
@@ -55,7 +52,6 @@ const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
           <X size={20} className="sm:w-6 sm:h-6" />
         </button>
 
-        {/* Contenu de la modal */}
         <div className="pr-8 sm:pr-10">
           <div className="flex items-center mb-4 sm:mb-6">
             <Cctv className="text-cyan-400 mr-2 sm:mr-3" size={24} />
@@ -66,7 +62,6 @@ const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             <UpcomingEvents />
           </div>
 
-          {/* Pied de modal */}
           <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-slate-700/50">
             <div className="flex justify-center items-center space-x-2 sm:space-x-4">
               <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-r from-transparent to-cyan-400"></div>
@@ -80,9 +75,24 @@ const HolonewsModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   );
 };
 
-/** === Nouvelle modal PDF (ajout minimal) === */
+// Modal PDF avec solution mobile-friendly
 const PdfModal = ({ isOpen, onClose, pdfPath }: { isOpen: boolean; onClose: () => void; pdfPath: string }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   if (!isOpen) return null;
+
+  const pdfUrl = `${window.location.origin}${pdfPath}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
@@ -94,7 +104,7 @@ const PdfModal = ({ isOpen, onClose, pdfPath }: { isOpen: boolean; onClose: () =
       <div className="relative bg-slate-900/95 backdrop-blur-md border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 w-full max-w-4xl lg:max-w-5xl max-h-[95vh] overflow-hidden shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-white transition-colors duration-200 p-1 sm:p-2"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-slate-400 hover:text-white transition-colors duration-200 p-1 sm:p-2 z-10"
         >
           <X size={20} className="sm:w-6 sm:h-6" />
         </button>
@@ -106,20 +116,84 @@ const PdfModal = ({ isOpen, onClose, pdfPath }: { isOpen: boolean; onClose: () =
           </h2>
         </div>
 
-        {/* iframe bien FERMÉE pour éviter l'erreur JSX */}
-        <div className="w-full h-[70vh] sm:h-[80vh]">
-          <iframe
-  src={`https://docs.google.com/viewer?url=${encodeURIComponent(pdfPath)}&embedded=true`}
-  className="w-full h-full rounded-lg border border-slate-700"
-></iframe>
-
+        {/* Contenu PDF adaptatif */}
+        <div className="w-full h-[60vh] sm:h-[70vh] bg-slate-800/50 rounded-lg overflow-hidden">
+          {isMobile ? (
+            // Version mobile : lien direct vers le PDF
+            <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-4">
+              <div className="text-6xl mb-4">📄</div>
+              <h3 className="text-white text-lg font-semibold mb-2">
+                Visualisation PDF
+              </h3>
+              <p className="text-slate-300 text-sm mb-6 max-w-xs">
+                Pour une meilleure expérience sur mobile, le PDF s&apos;ouvrira dans votre navigateur ou application PDF.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                >
+                  <BookOpen size={18} />
+                  <span>Ouvrir le PDF</span>
+                </a>
+                <a
+                  href={pdfUrl}
+                  download
+                  className="flex items-center justify-center space-x-2 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                >
+                  <span>⬇️</span>
+                  <span>Télécharger</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            // Version desktop : embed avec iframe
+            <>
+              <iframe
+                src={`${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1`}
+                className="w-full h-full rounded-lg border-0"
+                title="Règlements officiels combat FJ"
+                loading="lazy"
+              />
+              {/* Fallback si iframe ne fonctionne pas */}
+              <div className="absolute inset-0 flex items-center justify-center bg-slate-800/50 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+                <div className="bg-slate-900/90 p-4 rounded-lg pointer-events-auto">
+                  <p className="text-white text-sm mb-3">Problème d&apos;affichage ?</p>
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-sm transition-colors"
+                  >
+                    <BookOpen size={14} />
+                    <span>Ouvrir dans un nouvel onglet</span>
+                  </a>
+                </div>
+              </div>
+            </>
+          )}
         </div>
+
+        {/* Liens de téléchargement pour desktop */}
+        {!isMobile && (
+          <div className="mt-4 text-center">
+            <a
+              href={pdfUrl}
+              download
+              className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors text-sm"
+            >
+              <span>⬇️</span>
+              <span>Télécharger le PDF</span>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-// Composants existants
 const Header = () => (
   <header className="text-center mb-8 relative">
     <div className="relative inline-block">
@@ -207,7 +281,6 @@ const SocialLinks = () => {
   );
 };
 
-/** === ProjectLinks : onOpenModal devient générique (holonews | pdf) === */
 const ProjectLinks = ({ onOpenModal }: { onOpenModal: (type: 'holonews' | 'pdf', pdfPath?: string) => void }) => {
   const projectLinks: ProjectLink[] = [
     {
@@ -267,11 +340,10 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: (type: 'holonews' | 'pdf',
       icon: <Gamepad size={24} />,
       category: 'animalflow',
     },
-    /** === Nouvel item PDF (ajout minimal) === */
     {
       title: 'Règlements officiels combat FJ',
       description: 'Consulter les règlements officiels en format PDF',
-      url: '/documents/ReglementsFJ.pdf', // place le fichier ici
+      url: '/documents/ReglementsFJ.pdf',
       icon: <BookOpen size={24} />,
       category: 'resources',
       isPdf: true
@@ -299,7 +371,7 @@ const ProjectLinks = ({ onOpenModal }: { onOpenModal: (type: 'holonews' | 'pdf',
       onOpenModal('holonews');
     } else if (link.isPdf) {
       e.preventDefault();
-      onOpenModal('pdf', link.url); // on passe le path du PDF
+      onOpenModal('pdf', link.url);
     }
   };
 
@@ -356,9 +428,8 @@ const Footer = () => (
 const DojoProfilePage = () => {
   const [isHolonewsOpen, setIsHolonewsOpen] = useState(false);
   const [isPdfOpen, setIsPdfOpen] = useState(false);
-  const [pdfSrc, setPdfSrc] = useState<string>('/pdfs/reglement-combat-fj.pdf');
+  const [pdfSrc, setPdfSrc] = useState<string>('/documents/ReglementsFJ.pdf');
 
-  /** Un seul handler pour garder la même prop côté ProjectLinks */
   const handleOpenModal = (type: 'holonews' | 'pdf', src?: string) => {
     if (type === 'holonews') {
       setIsHolonewsOpen(true);
@@ -373,30 +444,25 @@ const DojoProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-      {/* Éléments de fond décoratifs */}
       <div className="absolute top-0 left-0 w-full h-full opacity-20">
         <div className="absolute top-20 left-10 w-32 h-32 bg-cyan-400/10 rounded-full blur-3xl"></div>
         <div className="absolute top-40 right-20 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 left-20 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl"></div>
       </div>
       
-      {/* Lignes décoratives */}
       <div className="absolute top-0 left-0 w-full h-full opacity-30">
         <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
         <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
       </div>
 
-      {/* Contenu principal */}
       <div className="relative z-10 container mx-auto px-4 py-12 max-w-6xl">
         <Header />
         <Description />
         <SocialLinks />
-        {/* >>> on conserve UNE SEULE prop, mais plus générique */}
         <ProjectLinks onOpenModal={handleOpenModal} />
         <Footer />
       </div>
 
-      {/* Modals */}
       <HolonewsModal isOpen={isHolonewsOpen} onClose={closeHolonews} />
       <PdfModal isOpen={isPdfOpen} onClose={closePdf} pdfPath={pdfSrc} />
     </div>
