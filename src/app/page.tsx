@@ -411,7 +411,7 @@ const Footer = () => (
       <div className="w-8 h-0.5 bg-gradient-to-l from-transparent to-cyan-400"></div>
     </div>
     <p className="text-xs text-slate-400 animate-pulse px-2 text-center">
-      © 2025 Forge Je&apos;daii - Développé avec ❤️ par{" "}
+      © 2026 Forge Je&apos;daii - Développé avec ❤️ par{" "}
       <a
         href="https://www.linkedin.com/in/lococoanthony/"
         target="_blank"
