@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, Atom, ExternalLink, Instagram, Menu, Mountain, PawPrint, Shield, Sparkles, X } from "lucide-react";
+import { ArrowRight, Atom, ExternalLink, Gamepad2, Instagram, Menu, Mountain, PawPrint, Shield, Sparkles, X } from "lucide-react";
 import Holonews from "./holonews";
 import AdminPanel from "./admin-panel";
 import { fallbackEvents, type HolonewsEvent } from "../lib/holonews";
@@ -13,6 +13,7 @@ const portals = [
   { title: "Animal Flow", description: "Bouger mieux. Respirer mieux.", href: "https://www.animalflow-jedaii.fr/", icon: PawPrint, accent: "#34d399" },
   { title: "Kengido France", description: "Communauté nationale.", href: "https://www.forgejedaii.fr/", icon: Mountain, accent: "#f59e0b" },
   { title: "CODATECH × BATTLE SWORD", description: "Technologies immersives et combat connecté.", href: "https://www.oark.io/", icon: Atom, accent: "#a78bfa" },
+  { title: "COMBAT SENSEI COMPAGNON", description: "L’application officielle FJ pour l’arbitrage, les modes de jeu et la création d’événements.", href: "https://combat-sensei-compagnon-csc-next-js.vercel.app/", icon: Gamepad2, accent: "#fb7185" },
 ];
 
 export default function HubPage() {
