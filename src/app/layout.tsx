@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const title = "La Forge Je’daii — Arts martiaux, mouvement et technologie";
-const description = "Le hub officiel Je’Daii : Academy, arts martiaux, sabre laser, Animal Flow, technologies immersives et communauté.";
+const description = "Le hub officiel Je’daii : Academy, arts martiaux, sabre laser, Animal Flow, technologies immersives et communauté.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jedaii.fr"), title, description,
