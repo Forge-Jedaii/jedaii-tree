@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const title = "La Forge Je’Daii — Arts martiaux, mouvement et technologie";
+const title = "La Forge Je’daii — Arts martiaux, mouvement et technologie";
 const description = "Le hub officiel Je’Daii : Academy, arts martiaux, sabre laser, Animal Flow, technologies immersives et communauté.";
 
 export const metadata: Metadata = {

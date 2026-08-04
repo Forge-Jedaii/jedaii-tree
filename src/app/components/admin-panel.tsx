@@ -22,7 +22,12 @@ export default function AdminPanel({ open, onClose, onChanged }: { open: boolean
   const login = async (e: React.FormEvent) => {
     e.preventDefault(); setError("");
     const r = await fetch("/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
-    if (!r.ok) return setError("Accès refusé.");
+    if (!r.ok) {
+      setPassword("");
+      return setError(r.status === 503
+        ? "La configuration administrateur manque sur ce serveur. Ajoutez les variables d’environnement puis redémarrez-le."
+        : "Adresse e-mail ou mot de passe incorrect.");
+    }
     setPassword(""); await load();
   };
   const save = async (e: React.FormEvent) => {
