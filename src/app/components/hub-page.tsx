@@ -71,7 +71,7 @@ export default function HubPage() {
       </section>
 
       <section id="portails" className="section-shell scroll-mt-24" aria-labelledby="portals-title">
-        <div className="section-heading"><span className="eyebrow">Six voies · une communauté</span><h2 id="portals-title">Portails Je’Daii</h2><p>Tout l’univers Je’Daii, accessible en un regard.</p></div>
+        <div className="section-heading"><span className="eyebrow">Six voies · une communauté</span><h2 id="portals-title">Portails Je’Daii</h2><p>Tout l’univers Je’daii, accessible en un regard.</p></div>
         <div className="portal-grid">
           {portals.map((portal, index) => {
             const Icon = portal.icon;
