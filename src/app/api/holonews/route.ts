@@ -1,41 +1,41 @@
 import { NextResponse } from "next/server";
 import { isAdmin } from "../../lib/admin-auth";
-import { fallbackEvents } from "../../lib/holonews";
+import { readEvents, writeEvents } from "../../lib/holonews-store";
+import type { HolonewsEvent } from "../../lib/holonews";
 
-const config = () => ({ url: process.env.NEXT_PUBLIC_SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY });
-const headers = (key: string) => ({ apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", Prefer: "return=representation" });
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const admin = new URL(request.url).searchParams.get("admin") === "1";
   if (admin && !(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { url, key } = config();
-  if (!url || !key) return NextResponse.json(admin ? [] : fallbackEvents);
-  const filter = admin ? "" : "published=eq.true&";
-  const response = await fetch(`${url}/rest/v1/holonews?${filter}select=*&order=order_index.asc,date.asc`, { headers: headers(key), cache: "no-store" });
-  if (!response.ok) return NextResponse.json(admin ? [] : fallbackEvents);
-  return NextResponse.json(await response.json());
+  const events = await readEvents();
+  return NextResponse.json(events.filter((event) => admin || event.published).sort((a, b) => a.order_index - b.order_index || a.date.localeCompare(b.date)));
 }
 
 export async function POST(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { url, key } = config(); if (!url || !key) return NextResponse.json({ error: "Supabase missing" }, { status: 503 });
   const body = await request.json();
-  const response = await fetch(`${url}/rest/v1/holonews`, { method: "POST", headers: headers(key), body: JSON.stringify(body) });
-  return NextResponse.json(await response.json(), { status: response.ok ? 201 : response.status });
+  const events = await readEvents();
+  const event: HolonewsEvent = { ...body, id: events.reduce((max, item) => Math.max(max, item.id), 0) + 1, link: body.link || null, created_at: new Date().toISOString() };
+  await writeEvents([...events, event]);
+  return NextResponse.json(event, { status: 201 });
 }
 
 export async function PATCH(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { url, key } = config(); if (!url || !key) return NextResponse.json({ error: "Supabase missing" }, { status: 503 });
   const { id, ...body } = await request.json();
-  const response = await fetch(`${url}/rest/v1/holonews?id=eq.${Number(id)}`, { method: "PATCH", headers: headers(key), body: JSON.stringify(body) });
-  return NextResponse.json(await response.json(), { status: response.status });
+  const events = await readEvents();
+  const index = events.findIndex((item) => item.id === Number(id));
+  if (index < 0) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  events[index] = { ...events[index], ...body, link: body.link || null };
+  await writeEvents(events);
+  return NextResponse.json(events[index]);
 }
 
 export async function DELETE(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { url, key } = config(); if (!url || !key) return NextResponse.json({ error: "Supabase missing" }, { status: 503 });
   const id = Number(new URL(request.url).searchParams.get("id"));
-  const response = await fetch(`${url}/rest/v1/holonews?id=eq.${id}`, { method: "DELETE", headers: headers(key) });
-  return response.ok ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "Delete failed" }, { status: response.status });
+  const events = await readEvents();
+  await writeEvents(events.filter((item) => item.id !== id));
+  return NextResponse.json({ ok: true });
 }

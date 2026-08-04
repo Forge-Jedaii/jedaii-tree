@@ -3,18 +3,16 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, Atom, ExternalLink, Instagram, Menu, Mountain, Network, PawPrint, Shield, Sparkles, Swords, X } from "lucide-react";
+import { ArrowRight, Atom, ExternalLink, Instagram, Menu, Mountain, PawPrint, Shield, Sparkles, X } from "lucide-react";
 import Holonews from "./holonews";
 import AdminPanel from "./admin-panel";
 import { fallbackEvents, type HolonewsEvent } from "../lib/holonews";
 
 const portals = [
   { title: "JE’DAII ACADEMY", description: "Votre espace membre, vos formations, vos grades et votre progression.", href: "https://academy.jedaii.fr", icon: Shield, accent: "#38bdf8", featured: true },
-  { title: "Forge Je’Daii", description: "Arts martiaux et sabre laser.", href: "https://www.forgejedaii.fr/", icon: Swords, accent: "#22d3ee" },
   { title: "Animal Flow", description: "Bouger mieux. Respirer mieux.", href: "https://www.animalflow-jedaii.fr/", icon: PawPrint, accent: "#34d399" },
   { title: "Kengido France", description: "Communauté nationale.", href: "https://www.forgejedaii.fr/", icon: Mountain, accent: "#f59e0b" },
-  { title: "CODATECH", description: "Technologies immersives.", href: "https://oark.io/", icon: Atom, accent: "#a78bfa" },
-  { title: "Battle Sword", description: "Combat connecté.", href: "https://oark.io/", icon: Network, accent: "#fb7185" },
+  { title: "CODATECH × BATTLE SWORD", description: "Technologies immersives et combat connecté.", href: "https://www.oark.io/", icon: Atom, accent: "#a78bfa" },
 ];
 
 export default function HubPage() {
@@ -78,7 +76,6 @@ export default function HubPage() {
           {portals.map((portal, index) => {
             const Icon = portal.icon;
             return <motion.a key={portal.title} href={portal.href} target="_blank" rel="noreferrer" className={`portal-card ${portal.featured ? "featured" : ""}`} style={{ "--accent": portal.accent } as React.CSSProperties} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .05 }}>
-              <div className="portal-visual"><Image src="/images/both.png" alt="" fill sizes="(max-width: 768px) 100vw, 33vw" /></div>
               <div className="portal-content"><span className="portal-icon"><Icon size={23} /></span>{portal.featured && <span className="featured-label">Portail principal</span>}<h3>{portal.title}</h3><p>{portal.description}</p><span className="enter">Entrer <ArrowRight size={17} /></span></div>
             </motion.a>;
           })}

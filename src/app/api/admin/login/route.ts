@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createAdminSession, validPassword } from "../../../lib/admin-auth";
+import { createAdminSession, validCredentials } from "../../../lib/admin-auth";
 
 export async function POST(request: Request) {
-  const { password } = await request.json();
-  if (typeof password !== "string" || !validPassword(password)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { email, password } = await request.json();
+  if (typeof email !== "string" || typeof password !== "string" || !validCredentials(email, password)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   await createAdminSession();
   return NextResponse.json({ ok: true });
 }

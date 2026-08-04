@@ -9,9 +9,10 @@ function signature(value: string) {
   return createHmac("sha256", secret).update(value).digest("hex");
 }
 
-export function validPassword(value: string) {
+export function validCredentials(email: string, value: string) {
   const expected = process.env.ADMIN_PASSWORD;
-  if (!expected || value.length !== expected.length) return false;
+  const expectedEmail = process.env.ADMIN_EMAIL;
+  if (!expected || !expectedEmail || email.trim().toLowerCase() !== expectedEmail.toLowerCase() || value.length !== expected.length) return false;
   return timingSafeEqual(Buffer.from(value), Buffer.from(expected));
 }
 
