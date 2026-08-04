@@ -1,7 +1,8 @@
 "use client";
 
-import { CalendarDays, ExternalLink, Radio } from "lucide-react";
+import { CalendarDays, ExternalLink, Radio, Satellite, ShieldCheck, Wifi } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import type { HolonewsEvent } from "../lib/holonews";
 
 const DAY = 86_400_000;
@@ -11,47 +12,74 @@ function eventState(dateValue: string, createdAt: string) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const days = Math.round((eventDate.getTime() - today.getTime()) / DAY);
+  if (days < 0) return { label: "Passé", past: true };
   if (days === 0) return { label: "Aujourd’hui", past: false };
-  if (days > 0 && days <= 7) return { label: "Cette semaine", past: false };
-  if (Date.now() - new Date(createdAt).getTime() <= 7 * DAY) return { label: "Nouveau", past: days < 0 };
-  return { label: null, past: days < 0 };
+  if (days <= 7) return { label: "Cette semaine", past: false };
+  if (Date.now() - new Date(createdAt).getTime() <= 7 * DAY) return { label: "Nouveau", past: false };
+  return { label: null, past: false };
 }
 
 export default function Holonews({ events }: { events: HolonewsEvent[] }) {
+  const [cursorPosition, setCursorPosition] = useState(0);
   const sorted = [...events].sort((a, b) => a.order_index - b.order_index || a.date.localeCompare(b.date));
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setCursorPosition((value) => (value + 1) % 4), 2800);
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
-    <section id="holonews" className="section-shell scroll-mt-24" aria-labelledby="holonews-title">
-      <div className="section-heading">
-        <span className="eyebrow"><Radio size={15} /> Transmission active</span>
-        <h2 id="holonews-title">Holonews</h2>
-        <p>Les prochains rendez-vous de la communauté Je’Daii.</p>
+    <section id="holonews" className="holonews-terminal scroll-mt-24" aria-labelledby="holonews-title">
+      <div className="terminal-grid" aria-hidden="true" />
+      <header className="terminal-header">
+        <span className="terminal-kicker"><Radio size={14} /> Canal d’information // JDI-01</span>
+        <h2 id="holonews-title">HOLO NEWS</h2>
+        <p>Transmission réseau Je’Daii</p>
+        <span className="terminal-beam" aria-hidden="true" />
+      </header>
+
+      <div className="terminal-status" aria-label="État du réseau">
+        <span><i /> TRANSMISSION ACTIVE</span>
+        <span><Wifi size={14} /> Réseau Je’Daii connecté</span>
+        <span><ShieldCheck size={14} /> Signal sécurisé</span>
+        <span className="sync">SYNC <b>100%</b></span>
       </div>
-      <div className="timeline">
+
+      <div className="terminal-prompt" aria-hidden="true">
+        <motion.span animate={{ x: cursorPosition * 12 }} transition={{ duration: .35, ease: "easeOut" }}>&gt;</motion.span>
+        <span> interrogation des transmissions</span><i>█</i>
+      </div>
+
+      <div className="transmission-timeline">
         {sorted.map((event, index) => {
           const state = eventState(event.date, event.created_at);
           return (
             <motion.article
               key={event.id}
-              className={`timeline-item ${state.past ? "is-past" : ""}`}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              className={`transmission ${state.past ? "is-past" : "is-upcoming"}`}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -28 : 28, filter: "blur(3px)" }}
+              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.45, delay: Math.min(index * 0.07, 0.25) }}
+              transition={{ duration: .55, delay: Math.min(index * .06, .24), ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="timeline-dot" style={{ "--event-color": event.color } as React.CSSProperties} />
-              <div className="event-card" style={{ "--event-color": event.color } as React.CSSProperties}>
-                <div className="event-meta">
-                  <span><CalendarDays size={16} />{new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(`${event.date}T12:00:00`))}</span>
+              <span className="transmission-node" style={{ "--event-color": event.color } as React.CSSProperties}><i /></span>
+              <div className="transmission-card" style={{ "--event-color": event.color } as React.CSSProperties}>
+                <div className="transmission-topline"><span>TR-{String(event.id).padStart(4, "0")}</span><span>{state.past ? "ARCHIVE" : "REÇU"}</span></div>
+                <div className="transmission-meta">
+                  <span><CalendarDays size={15} />{new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(`${event.date}T12:00:00`))}</span>
                   {state.label && <strong>{state.label}</strong>}
                 </div>
+                <motion.span className="transmission-icon" whileHover={{ rotate: 8 }}><Satellite size={21} /></motion.span>
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
-                {event.link && <a href={event.link} target="_blank" rel="noreferrer">En savoir plus <ExternalLink size={15} /></a>}
+                {event.link ? <a href={event.link} target="_blank" rel="noreferrer">En savoir plus <ExternalLink size={14} /></a> : <span className="transmission-closed">Transmission complète</span>}
+                <span className="corner-mark" aria-hidden="true" />
               </div>
             </motion.article>
           );
         })}
       </div>
+      <div className="terminal-footerline"><span>JE’DAII NETWORK</span><span>{String(sorted.length).padStart(2, "0")} TRANSMISSION{sorted.length > 1 ? "S" : ""}</span></div>
     </section>
   );
 }
