@@ -63,7 +63,7 @@ export default function HubPage() {
         </motion.button>
         <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15, duration: .65 }}>
           <span className="eyebrow"><Sparkles size={15} /> Le portail de la communauté</span>
-          <h1>La Forge <span>Je’Daii</span></h1>
+          <h1>La Forge <span>Je’daii</span></h1>
           <p className="hero-lead">Choisissez votre voie.</p>
           <p className="hero-pillars">Arts martiaux. <b>Mouvement.</b> Technologie. <b>Communauté.</b></p>
           <a className="primary-action" href="#portails">Explorer les portails <ArrowRight size={18} /></a>
