@@ -6,7 +6,7 @@ const description = "Le hub officiel Je’Daii : Academy, arts martiaux, sabre l
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jedaii.fr"), title, description,
-  openGraph: { title, description, url: "/", siteName: "La Forge Je’Daii", locale: "fr_FR", type: "website", images: [{ url: "/images/both.png", width: 1200, height: 630, alt: "La Forge Je’Daii" }] },
+  openGraph: { title, description, url: "/", siteName: "La Forge Je’daii", locale: "fr_FR", type: "website", images: [{ url: "/images/both.png", width: 1200, height: 630, alt: "La Forge Je’Daii" }] },
   twitter: { card: "summary_large_image", title, description, images: ["/images/both.png"] },
 };
 

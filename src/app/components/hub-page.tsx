@@ -84,12 +84,12 @@ export default function HubPage() {
 
       <Holonews events={events} />
 
-      <section id="a-propos" className="section-shell about scroll-mt-24"><div><span className="eyebrow">心・技・体 · Shin Gi Tai</span><h2>Plus qu’un dojo.<br />Un écosystème.</h2></div><p>La Forge Je’Daii relie arts martiaux, mouvement et technologies immersives. Un espace pour apprendre, progresser, transmettre et rencontrer une communauté animée par la même énergie.</p></section>
+      <section id="a-propos" className="section-shell about scroll-mt-24"><div><span className="eyebrow">心・技・体 · Shin Gi Tai</span><h2>Plus qu’un dojo.<br />Un écosystème.</h2></div><p>La Forge Je’daii relie arts martiaux, mouvement et technologies immersives. Un espace pour apprendre, progresser, transmettre et rencontrer une communauté animée par la même énergie.</p></section>
 
       <footer>
         <div className="footer-mark">心・技・体</div>
         <div className="footer-links"><a href="#portails">Portails</a><a href="#holonews">Holonews</a><a href="https://discord.gg/AjKM9vduNS" target="_blank" rel="noreferrer">Discord <ExternalLink size={13} /></a><a href="https://www.instagram.com/laforgejedaii/" target="_blank" rel="noreferrer"><Instagram size={14} /> Instagram</a></div>
-        <p>© 2026 Forge Je&apos;Daii - Développé avec ❤️ par <a href="https://www.linkedin.com/in/lococoanthony/" target="_blank" rel="noreferrer">@jedaiidev</a></p>
+        <p>© 2026 Forge Je&apos;daii - Développé avec ❤️ par <a href="https://www.linkedin.com/in/lococoanthony/" target="_blank" rel="noreferrer">@jedaiidev</a></p>
       </footer>
       <AdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} onChanged={refreshEvents} />
     </main>
