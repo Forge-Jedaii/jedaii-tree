@@ -34,7 +34,9 @@ export default function AdminPanel({ open, onClose, onChanged }: { open: boolean
     e.preventDefault();
     const method = editing ? "PATCH" : "POST";
     const r = await fetch("/api/holonews", { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing ? { ...form, id: editing } : form) });
-    if (!r.ok) return setError("Enregistrement impossible. Vérifiez que le serveur peut écrire dans le dossier data.");
+    if (!r.ok) return setError(r.status === 503
+      ? "Stockage non configuré. Connectez un espace Vercel Blob au projet puis redéployez."
+      : "Enregistrement impossible. Réessayez dans quelques instants.");
     setForm(empty); setEditing(null); await load(); await onChanged();
   };
   const remove = async (id: number) => { if (!confirm("Supprimer cet événement ?")) return; await fetch(`/api/holonews?id=${id}`, { method: "DELETE" }); await load(); await onChanged(); };

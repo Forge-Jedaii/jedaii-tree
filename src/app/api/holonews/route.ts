@@ -17,7 +17,8 @@ export async function POST(request: Request) {
   const body = await request.json();
   const events = await readEvents();
   const event: HolonewsEvent = { ...body, id: events.reduce((max, item) => Math.max(max, item.id), 0) + 1, link: body.link || null, created_at: new Date().toISOString() };
-  await writeEvents([...events, event]);
+  try { await writeEvents([...events, event]); }
+  catch { return NextResponse.json({ error: "Persistent storage unavailable" }, { status: 503 }); }
   return NextResponse.json(event, { status: 201 });
 }
 
@@ -28,7 +29,8 @@ export async function PATCH(request: Request) {
   const index = events.findIndex((item) => item.id === Number(id));
   if (index < 0) return NextResponse.json({ error: "Not found" }, { status: 404 });
   events[index] = { ...events[index], ...body, link: body.link || null };
-  await writeEvents(events);
+  try { await writeEvents(events); }
+  catch { return NextResponse.json({ error: "Persistent storage unavailable" }, { status: 503 }); }
   return NextResponse.json(events[index]);
 }
 
@@ -36,6 +38,7 @@ export async function DELETE(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const id = Number(new URL(request.url).searchParams.get("id"));
   const events = await readEvents();
-  await writeEvents(events.filter((item) => item.id !== id));
+  try { await writeEvents(events.filter((item) => item.id !== id)); }
+  catch { return NextResponse.json({ error: "Persistent storage unavailable" }, { status: 503 }); }
   return NextResponse.json({ ok: true });
 }
