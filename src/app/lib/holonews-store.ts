@@ -1,20 +1,24 @@
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
+import { headers } from "next/headers";
 import { fallbackEvents, type HolonewsEvent } from "./holonews";
 
 const storePath = path.join(process.cwd(), "data", "holonews.json");
 const blobPath = "holonews/events.json";
 
-function blobConfig() {
-  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+async function blobConfig() {
+  const readWriteToken = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+  const oidcToken = process.env.VERCEL_OIDC_TOKEN?.trim() || (await headers()).get("x-vercel-oidc-token")?.trim();
+  const configuredStoreId = process.env.BLOB_READ_WRITE_TOKEN_STORE_ID || process.env.BLOB_STORE_ID;
+  const token = readWriteToken || oidcToken;
   if (!token) return null;
-  const storeId = token.split("_")[3];
-  if (!storeId) throw new Error("Invalid BLOB_READ_WRITE_TOKEN");
+  const storeId = (configuredStoreId || readWriteToken?.split("_")[3] || "").replace(/^store_/, "");
+  if (!storeId) throw new Error("Vercel Blob store ID is missing");
   return { token, storeId };
 }
 
 export async function readEvents() {
-  const blob = blobConfig();
+  const blob = await blobConfig();
   if (blob) {
     try {
       const response = await fetch(`https://${blob.storeId}.public.blob.vercel-storage.com/${blobPath}?v=${Date.now()}`, { cache: "no-store" });
@@ -31,7 +35,7 @@ export async function readEvents() {
 }
 
 export async function writeEvents(events: HolonewsEvent[]) {
-  const blob = blobConfig();
+  const blob = await blobConfig();
   if (blob) {
     const body = JSON.stringify(events, null, 2) + "\n";
     const response = await fetch(`https://vercel.com/api/blob/?pathname=${encodeURIComponent(blobPath)}`, {
