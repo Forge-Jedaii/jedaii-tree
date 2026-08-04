@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, ExternalLink, Radio, Satellite, ShieldCheck, Wifi } from "lucide-react";
+import { CalendarDays, ChevronDown, ExternalLink, Radio, Satellite, ShieldCheck, Wifi } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import type { HolonewsEvent } from "../lib/holonews";
@@ -22,6 +22,11 @@ function eventState(dateValue: string, createdAt: string) {
 export default function Holonews({ events }: { events: HolonewsEvent[] }) {
   const [cursorPosition, setCursorPosition] = useState(0);
   const sorted = [...events].sort((a, b) => a.order_index - b.order_index || a.date.localeCompare(b.date));
+  const upcoming = sorted.filter((event) => !eventState(event.date, event.created_at).past);
+  const archived = sorted
+    .filter((event) => eventState(event.date, event.created_at).past)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 4);
 
   useEffect(() => {
     const timer = window.setInterval(() => setCursorPosition((value) => (value + 1) % 4), 2800);
@@ -51,7 +56,7 @@ export default function Holonews({ events }: { events: HolonewsEvent[] }) {
       </div>
 
       <div className="transmission-timeline">
-        {sorted.map((event, index) => {
+        {upcoming.map((event, index) => {
           const state = eventState(event.date, event.created_at);
           return (
             <motion.article
@@ -79,6 +84,25 @@ export default function Holonews({ events }: { events: HolonewsEvent[] }) {
           );
         })}
       </div>
+      {archived.length > 0 && (
+        <details className="archive-drawer" open>
+          <summary>
+            <span><Radio size={13} /> Archives récentes</span>
+            <small>{archived.length} / 4 transmissions affichées</small>
+            <ChevronDown className="archive-chevron" size={17} />
+          </summary>
+          <div className="archive-list">
+            {archived.map((event, index) => (
+              <motion.article key={event.id} className="archive-row" style={{ "--event-color": event.color } as React.CSSProperties} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .04 }}>
+                <span className="archive-code">TR-{String(event.id).padStart(4, "0")}</span>
+                <time dateTime={event.date}>{new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(`${event.date}T12:00:00`))}</time>
+                <div><h3>{event.title}</h3><p>{event.description}</p></div>
+                {event.link ? <a href={event.link} target="_blank" rel="noreferrer" aria-label={`En savoir plus sur ${event.title}`}><ExternalLink size={15} /></a> : <span className="archive-status">Passé</span>}
+              </motion.article>
+            ))}
+          </div>
+        </details>
+      )}
       <div className="terminal-footerline"><span>JE’DAII NETWORK</span><span>{String(sorted.length).padStart(2, "0")} TRANSMISSION{sorted.length > 1 ? "S" : ""}</span></div>
     </section>
   );
