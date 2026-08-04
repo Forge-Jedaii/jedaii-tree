@@ -9,7 +9,7 @@ import AdminPanel from "./admin-panel";
 import { fallbackEvents, type HolonewsEvent } from "../lib/holonews";
 
 const portals = [
-  { title: "JE’DAII ACADEMY", description: "Votre espace membre, vos formations, vos grades et votre progression.", href: "https://academy.jedaii.fr", icon: Shield, accent: "#38bdf8", featured: true },
+  { title: "JE’DAII ACADEMY", description: "Votre espace membre, vos formations, vos grades et votre progression.", href: "https://forgejedaii.fr/", icon: Shield, accent: "#38bdf8", featured: true },
   { title: "Animal Flow", description: "Bouger mieux. Respirer mieux.", href: "https://www.animalflow-jedaii.fr/", icon: PawPrint, accent: "#34d399" },
   { title: "Kengido France", description: "Communauté nationale.", href: "https://www.forgejedaii.fr/", icon: Mountain, accent: "#f59e0b" },
   { title: "CODATECH × BATTLE SWORD", description: "Technologies immersives et combat connecté.", href: "https://www.oark.io/", icon: Atom, accent: "#a78bfa" },
