@@ -85,7 +85,7 @@ export default function Holonews({ events }: { events: HolonewsEvent[] }) {
         })}
       </div>
       {archived.length > 0 && (
-        <details className="archive-drawer" open>
+        <details className="archive-drawer">
           <summary>
             <span><Radio size={13} /> Archives récentes</span>
             <small>{archived.length} / 4 transmissions affichées</small>
