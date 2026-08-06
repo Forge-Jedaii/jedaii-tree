@@ -1,4 +1,4 @@
-const CACHE_NAME = "jedaii-hub-v1";
+const CACHE_NAME = "jedaii-hub-v2";
 const APP_SHELL = ["/", "/manifest.webmanifest", "/images/logojapanforge.png"];
 
 self.addEventListener("install", (event) => {

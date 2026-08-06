@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import PwaRegister from "./components/pwa-register";
+import InstallPrompt from "./components/install-prompt";
 
 export const viewport: Viewport = { themeColor: "#030910" };
 
@@ -22,5 +23,5 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const schema = { "@context": "https://schema.org", "@type": "Organization", name: "La Forge Je'Daii", url: "https://www.jedaii.fr", logo: "https://www.jedaii.fr/images/logojapanforge.png", sameAs: ["https://www.instagram.com/laforgejedaii/", "https://www.youtube.com/@ForgeJedaii"] };
-  return <html lang="fr"><body>{children}<PwaRegister /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} /></body></html>;
+  return <html lang="fr"><body>{children}<PwaRegister /><InstallPrompt /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} /></body></html>;
 }
