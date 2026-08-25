@@ -22,7 +22,7 @@ export const portalPaths: PortalPath[] = [
     accent: "#38bdf8",
     featured: true,
     position: [-3.25, 1.55, 0.15],
-    mobilePosition: [-1.95, 2.35, 0],
+    mobilePosition: [-0.75, 3.15, 0.05],
   },
   {
     id: "animal-flow",
@@ -32,7 +32,7 @@ export const portalPaths: PortalPath[] = [
     icon: "paw",
     accent: "#34d399",
     position: [3.25, 1.6, -0.1],
-    mobilePosition: [1.95, 2.25, 0],
+    mobilePosition: [0.75, 2.15, -0.08],
   },
   {
     id: "kengido-france",
@@ -42,7 +42,7 @@ export const portalPaths: PortalPath[] = [
     icon: "mountain",
     accent: "#f59e0b",
     position: [-3.45, -1.15, -0.2],
-    mobilePosition: [-1.95, -1.45, 0],
+    mobilePosition: [-0.75, -1.35, -0.05],
   },
   {
     id: "codatech-battle-sword",
@@ -52,7 +52,7 @@ export const portalPaths: PortalPath[] = [
     icon: "atom",
     accent: "#a78bfa",
     position: [3.45, -1.1, 0.1],
-    mobilePosition: [1.95, -1.35, 0],
+    mobilePosition: [0.75, -2.25, 0.08],
   },
   {
     id: "combat-sensei-compagnon",
@@ -62,6 +62,6 @@ export const portalPaths: PortalPath[] = [
     icon: "gamepad",
     accent: "#fb7185",
     position: [0, -2.75, 0.25],
-    mobilePosition: [0, -2.85, 0],
+    mobilePosition: [0, -3.15, 0.12],
   },
 ];
